@@ -4,7 +4,7 @@ from typing import Optional
 import sqlite3
 import logging
 
-def insert_user(name: str, email: str, cv: Optional[bytes] = None, id: Optional[UUID] = None):
+def insert_user(name: str, email: str, cv: str = None, id: Optional[UUID] = None):
     id = id or uuid4()  # Use provided ID or generate a new one
 
     try:
@@ -18,9 +18,9 @@ def insert_user(name: str, email: str, cv: Optional[bytes] = None, id: Optional[
 
             # Proceed with inserting the new user
             cursor.execute('''
-                INSERT INTO users (id_, name, email, cv)
-                VALUES (?, ?, ?, ?)
-            ''', (str(id), name, email, cv))
+                INSERT INTO users (id_, name, email, cv, verified)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (str(id), name, email, cv, False))
             conn.commit()
             logging.info("User inserted successfully.")
 
@@ -55,3 +55,31 @@ def get_user(name: str, email: str):
     
     conn.close()
     return user
+
+def verify_user(name: str, email: str):
+    try:
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            
+            # Update the user's verified status
+            cursor.execute('''
+            UPDATE users
+            SET verified = ?
+            WHERE name = ? AND email = ?
+            ''', (True, name, email))
+            
+            conn.commit()
+            
+            # Retrieve the updated user
+            cursor.execute('''
+            SELECT * FROM users
+            WHERE name = ? AND email = ?
+            ''', (name, email))
+            
+            user = cursor.fetchone()
+            
+            return user
+
+    except sqlite3.Error as e:
+        logging.error(f"An error occurred while verifying the user: {e}")
+        raise  # Reraise the exception for further handling if needed

@@ -10,7 +10,7 @@ app = FastAPI()
 initialize_db()
 
 @app.post("/insert_user")
-async def insert_user(name: str, email: str, cv: bytes = None, id: UUID = None):
+async def insert_user(name: str, email: str, cv: str = None, id: UUID = None):
     try:
         services.insert_user(name, email, cv)
         return {"message": "User inserted successfully"}
@@ -34,3 +34,14 @@ async def get_user(email: str, name: str):
         return user
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+@app.put("/verify_user/")
+async def verify_user(email: str, name: str):
+    try:
+        user = services.verify_user(name, email)
+        if user is None:
+            raise HTTPException(status_code=404, detail="User not found")
+        return {"message": "User successfully verified"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
