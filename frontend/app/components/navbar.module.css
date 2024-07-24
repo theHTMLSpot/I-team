@@ -1,0 +1,61 @@
+/* Basic styling for the navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--background); /* Use a variable for the background color */
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .logoContainer {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    margin-right: 2rem;
+  }
+  
+  .navLinks {
+    display: flex;
+    list-style: none;
+  }
+  
+  .navLinks li {
+    margin: 0 1rem;
+  }
+  
+  .navLinks a {
+    text-decoration: none;
+    color: var(--primary-blue); /* Use a variable for link color */
+    font-weight: bold;
+  }
+  
+  .navLinks a:hover {
+    color: var(--secondary-blue); /* Use a variable for hover color */
+  }
+  
+  .selected {
+    border-bottom: 2px solid var(--primary-blue); /* Highlight the selected link */
+    padding-bottom: 0.5rem;
+  }
+  
+  .cta {
+    margin-left: auto; /* Pushes the CTA button to the right */
+  }
+  
+  .cta a {
+    text-decoration: none;
+    color: var(--primary-blue); /* Use a variable for CTA color */
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--primary-blue);
+    border-radius: var(--border-radius); /* Use a variable for border radius */
+    transition: background-color 0.3s ease;
+  }
+  
+  .cta a:hover {
+    background-color: var(--primary-blue); /* Change background on hover */
+    color: white; /* Change text color on hover */
+  }
